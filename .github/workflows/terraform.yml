@@ -20,6 +20,7 @@ permissions:
 env:
   TF_VERSION: 1.6.6
   AWS_REGION: ${{ vars.AWS_REGION }}
+  AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN || secrets.AWS_ROLE_ARN }}
 
 jobs:
   terraform-plan:
@@ -33,10 +34,17 @@ jobs:
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
+      - name: Validate AWS role configuration
+        run: |
+          if [ -z "${AWS_ROLE_ARN}" ]; then
+            echo "AWS_ROLE_ARN is not set. Add it as a GitHub Actions variable or secret."
+            exit 1
+          fi
+
       - name: Configure AWS credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
           role-session-name: github-actions-terraform
 
@@ -65,10 +73,17 @@ jobs:
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
+      - name: Validate AWS role configuration
+        run: |
+          if [ -z "${AWS_ROLE_ARN}" ]; then
+            echo "AWS_ROLE_ARN is not set. Add it as a GitHub Actions variable or secret."
+            exit 1
+          fi
+
       - name: Configure AWS credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
           role-session-name: github-actions-terraform
 
