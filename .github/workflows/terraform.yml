@@ -21,6 +21,7 @@ env:
   TF_VERSION: 1.6.6
   AWS_REGION: ${{ vars.AWS_REGION }}
   AWS_ROLE_ARN: ${{ vars.AWS_ROLE_ARN }}
+  S3_BUCKET_NAME: ${{ vars.S3_BUCKET_NAME }}
 
 jobs:
   terraform-plan:
@@ -36,8 +37,11 @@ jobs:
 
       - name: Validate AWS role configuration
         run: |
+          echo "AWS_REGION=${AWS_REGION}"
+          echo "AWS_ROLE_ARN=${AWS_ROLE_ARN}"
+          echo "S3_BUCKET_NAME=${S3_BUCKET_NAME}"
           if [ -z "${AWS_ROLE_ARN}" ]; then
-            echo "AWS_ROLE_ARN is not set. Add it as a GitHub Actions variable or secret."
+            echo "AWS_ROLE_ARN is not set. Add it as a GitHub Actions variable named AWS_ROLE_ARN."
             exit 1
           fi
 
@@ -75,8 +79,11 @@ jobs:
 
       - name: Validate AWS role configuration
         run: |
+          echo "AWS_REGION=${AWS_REGION}"
+          echo "AWS_ROLE_ARN=${AWS_ROLE_ARN}"
+          echo "S3_BUCKET_NAME=${S3_BUCKET_NAME}"
           if [ -z "${AWS_ROLE_ARN}" ]; then
-            echo "AWS_ROLE_ARN is not set. Add it as a GitHub Actions variable or secret."
+            echo "AWS_ROLE_ARN is not set. Add it as a GitHub Actions variable named AWS_ROLE_ARN."
             exit 1
           fi
 
