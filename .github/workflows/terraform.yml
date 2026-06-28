@@ -53,7 +53,7 @@ jobs:
           role-session-name: github-actions-terraform
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -backend-config=backend.hcl -input=false
 
       - name: Terraform Format Check
         run: terraform fmt -check -recursive
