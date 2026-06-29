@@ -62,7 +62,7 @@ jobs:
         run: terraform validate
 
       - name: Generate unique bucket name
-        run: echo "bucket_name=prajyot-demo-${{ github.run_number }}" >> $GITHUB_ENV
+        run: echo "S3_BUCKET_NAME=prajyot-demo-${{ github.run_number }}" >> $GITHUB_ENV
 
       - name: Terraform Plan
         run: terraform plan -var="bucket_name=${{ env.S3_BUCKET_NAME }}" -input=false
@@ -101,7 +101,7 @@ jobs:
         run: terraform init -backend-config=backend.hcl -input=false
 
       - name: Generate unique bucket name
-        run: echo "bucket_name=prajyot-demo-${{ github.run_number }}" >> $GITHUB_ENV
+        run: echo "S3_BUCKET_NAME=prajyot-demo-${{ github.run_number }}" >> $GITHUB_ENV
 
       - name: Terraform Apply
         run: terraform apply -auto-approve -var="bucket_name=${{ env.S3_BUCKET_NAME }}" -input=false
