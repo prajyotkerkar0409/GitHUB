@@ -95,7 +95,10 @@ jobs:
           role-session-name: github-actions-terraform
 
       - name: Terraform Init
-        run: terraform init -backend-config=backend.hcl
+        run: terraform init -backend-config=backend.hcl -input=false
+
+      - name: Generate unique bucket name
+        run: echo "bucket_name=prajyot-demo-${{ secrets.S3_BUCKET_NAME }}-$(date +%s)" >> $GITHUB_ENV
 
       - name: Terraform Apply
         run: terraform apply -auto-approve -var="bucket_name=${{ secrets.S3_BUCKET_NAME }}" -input=false
